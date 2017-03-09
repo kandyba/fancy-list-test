@@ -1,3 +1,5 @@
+'use strict';
+
 function donReadyInit() {
     toggleAll();
     customCheckbox();
@@ -30,36 +32,36 @@ function customCheckbox() {
 
 function toggleAll() {
     var wrapper = document.getElementById('wrapper'),
-        option_lists = {
-            pets: ['dog', 'cat', 'fish', 'monkey', 'rat'],
-            fruits: ['apple', 'orange', 'banana', 'apricot']
-        },
-        middleClass = 'middle-state';
+      optionLists = {
+          pets: ['dog', 'cat', 'fish', 'monkey', 'rat'],
+          fruits: ['apple', 'orange', 'banana', 'apricot']
+      },
+      middleClass = 'middle-state';
 
-    function createNewList(array_list) {
+    function createNewList(arrayList) {
         var section = document.createElement('div');
         var ul = document.createElement('ul');
-        var toggle_all = document.createElement('input');
+        var toggleAll = document.createElement('input');
         var checkboxes;
-        var toggle_all_label = document.createElement('label');
-        var checkbox_area = document.createElement('div');
-        var toggleAllId = 'toggle_all_' + parseInt(Date.now() * Math.random(), 10);
+        var toggleAllLabel = document.createElement('label');
+        var checkboxArea = document.createElement('div');
+        var toggleAllId = 'toggleAll_' + parseInt(Date.now() * Math.random(), 10);
 
         section.className = 'section-list';
         section.style.padding = '30px';
         section.style.backgroundColor = '#eee';
 
-        toggle_all.setAttribute('type', 'checkbox');
-        toggle_all.setAttribute('id', toggleAllId);
+        toggleAll.setAttribute('type', 'checkbox');
+        toggleAll.setAttribute('id', toggleAllId);
 
-        toggle_all_label.setAttribute('for', toggleAllId);
-        toggle_all_label.innerText = 'All/None';
+        toggleAllLabel.setAttribute('for', toggleAllId);
+        toggleAllLabel.innerText = 'All/None';
 
-        checkbox_area.setAttribute('class', 'select-area');
-        checkbox_area.appendChild(toggle_all);
-        checkbox_area.appendChild(toggle_all_label);
+        checkboxArea.setAttribute('class', 'select-area');
+        checkboxArea.appendChild(toggleAll);
+        checkboxArea.appendChild(toggleAllLabel);
 
-        array_list.forEach(function(item, i) {
+        arrayList.forEach(function(item, i) {
             var li = document.createElement('li');
             var checkbox = document.createElement('input');
             var label = document.createElement('label');
@@ -77,7 +79,7 @@ function toggleAll() {
             ul.appendChild(li);
         });
 
-        section.appendChild(checkbox_area);
+        section.appendChild(checkboxArea);
         section.appendChild(ul);
 
         checkboxes = ul.querySelectorAll('input[type="checkbox"]');
@@ -86,11 +88,11 @@ function toggleAll() {
         function toggleAllHandler(e) {
             if (e.isTrusted) {
                 getNodeList(checkboxes).forEach(function(checkbox) {
-                    checkbox.checked = toggle_all.checked;
+                    checkbox.checked = toggleAll.checked;
                     fireEvent(checkbox, 'change');
                 });
 
-                toggle_all.parentNode.classList.remove(middleClass);
+                toggleAll.parentNode.classList.remove(middleClass);
             }
         }
 
@@ -108,34 +110,34 @@ function toggleAll() {
             if (!e || e.isTrusted) {
                 switch(getCheckedLength()) {
                     case 0:
-                        toggle_all.checked = false;
-                        toggle_all.parentNode.classList.remove(middleClass);
+                        toggleAll.checked = false;
+                        toggleAll.parentNode.classList.remove(middleClass);
                         break;
                     case checkboxes.length:
-                        toggle_all.checked = true;
-                        toggle_all.parentNode.classList.remove(middleClass);
-                      break;
+                        toggleAll.checked = true;
+                        toggleAll.parentNode.classList.remove(middleClass);
+                        break;
                     default:
-                        toggle_all.checked = false;
-                        toggle_all.parentNode.classList.add(middleClass);
-                     break;
+                        toggleAll.checked = false;
+                        toggleAll.parentNode.classList.add(middleClass);
+                        break;
                 }
 
-                fireEvent(toggle_all, 'change');
+                fireEvent(toggleAll, 'change');
             }
         }
 
         checkState();
 
         // attach events
-        toggle_all.addEventListener('change', toggleAllHandler);
+        toggleAll.addEventListener('change', toggleAllHandler);
         getNodeList(checkboxes).forEach(function(checkbox) {
             checkbox.addEventListener('change', checkState);
         });
     }
 
-    createNewList(option_lists.pets);
-    createNewList(option_lists.fruits);
+    createNewList(optionLists.pets);
+    createNewList(optionLists.fruits);
 }
 
 function fireEvent(element, event) {
